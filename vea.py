@@ -16,7 +16,7 @@ def run_multiple(keyword, pages, start):
 
     while i <= pages:
         print(i)
-        run (keyword,i, data)      
+        run(keyword,i, data)      
         i += 1
 
     with open(f'data-vea-{keyword}.csv', 'w', newline='') as file:
@@ -33,33 +33,34 @@ def run(keyword, page, data):
     from selenium.webdriver.chrome.options import Options
 
     chrome_options = Options()
+    chrome_options.add_argument("enable-automation")
     chrome_options.add_argument("--headless=new")  # newer, more reliable headless mode
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-extensions")
-
+    chrome_options.add_argument("--dns-prefetch-disable")
+    
     driver = webdriver.Chrome(options=chrome_options)
-    print("✅ Browser launched successfully")
-    logger.info(f'Browser launched successfully')
+    print("Browser launched successfully")
+    logger.info('Browser launched successfully')
 
     driver.implicitly_wait(5)
     # Open the browser window in full screen start in 1
     driver.get(f"https://www.vea.com.ar/{keyword}?page={page}")
-    # Set up MongoDB connection
-    #collection = util.get_products()
 
     # input_element = driver.find_element(By.ID , "downshift-1-input")
     # input_element.send_keys(keyword + Keys.ENTER)
     time.sleep(5)
 
+    logger.info('time.sleep(5)')
     util.cycle_scrolling(driver)
 
     # Current date
     current_date = datetime.now().strftime('%Y-%m-%d')
 
-    logger.info(f'Start to scrap')
+    logger.info('Start to scrap')
 
     try:
         # Find the main container div
