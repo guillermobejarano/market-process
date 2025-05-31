@@ -5,6 +5,10 @@ import time
 import util
 from datetime import datetime
 import csv
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def run_multiple(keyword, subKeyword, pages, start):
     i = start
@@ -23,8 +27,25 @@ def run_multiple(keyword, subKeyword, pages, start):
      
 
 def run(keyword, subKeyword, page, data):
-    driver = webdriver.Chrome()
+    print("hiperlibertad Launching browser...")
+    logger.info('hiperlibertad Launching browser...')
+
+    from selenium.webdriver.chrome.options import Options
+
+    chrome_options = Options()
+    chrome_options.add_argument("enable-automation")
+    chrome_options.add_argument("--headless=new")  # newer, more reliable headless mode
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--dns-prefetch-disable")    
+    driver = webdriver.Chrome(options=chrome_options)
     
+    print("hiperlibertad Browser launched successfully")
+    logger.info('hiperlibertad Browser launched successfully')
+
     driver.implicitly_wait(5)
     # Open the browser window in full screen start in 1
     driver.get(f"https://www.hiperlibertad.com.ar/{keyword}/{subKeyword}?page={page}")
@@ -32,18 +53,17 @@ def run(keyword, subKeyword, page, data):
         'name': 'storeSelectorId',
         'value': '110'
     })
-    # Set up MongoDB connection
-    collection = util.get_products()
 
     # input_element = driver.find_element(By.ID , "downshift-1-input")
     # input_element.send_keys(keyword + Keys.ENTER)
     time.sleep(5)
-
+    logger.info('hiperlibertad time.sleep(5)')
     util.cycle_scrolling(driver)
 
     # Current date
     current_date = datetime.now().strftime('%Y-%m-%d')
 
+    logger.info('hiperlibertad Start to scrap')
     try:
         # Find the main container div
         gallery_container = driver.find_element(By.ID, 'gallery-layout-container')
@@ -85,10 +105,9 @@ def run(keyword, subKeyword, page, data):
                     'market': 'hiperlibertad'
                 }
 
-                print(product_document)
+                print(f'hiperlibertad of vea market = {product_document}')
+                logger.info(f'hiperlibertad of vea market = {product_document}')
                 data.append(product_document)
-                # Insert the product document into the MongoDB collection
-                #collection.insert_one(product_document)
             except Exception as e:
                 print(f"An error occurred while retrieving a product: {e}")
 

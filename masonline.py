@@ -5,6 +5,10 @@ import time
 import util
 from datetime import datetime
 import csv
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def run_multiple(keyword, pages, start):
     i = start
@@ -23,24 +27,38 @@ def run_multiple(keyword, pages, start):
      
 
 def run(keyword, page, data):
-    print("masonline / run")
-    driver = webdriver.Chrome()
+    print("masonline Launching browser...")
+    logger.info('masonline Launching browser...')
+    from selenium.webdriver.chrome.options import Options
+
+    chrome_options = Options()
+    chrome_options.add_argument("enable-automation")
+    chrome_options.add_argument("--headless=new")  # newer, more reliable headless mode
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--dns-prefetch-disable")    
+    driver = webdriver.Chrome(options=chrome_options)
+
+    print("masonline Browser launched successfully")
+    logger.info('masonline Browser launched successfully')
 
     driver.implicitly_wait(5)
 
     # Open the browser window in full screen start in 1
-
     driver.get(f"https://www.masonline.com.ar/{keyword}?map=productclusternames&page={page}")
 
     # input_element = driver.find_element(By.ID , "downshift-1-input")
     # input_element.send_keys(keyword + Keys.ENTER)
     time.sleep(5)
-
+    logger.info('masonline time.sleep(5)')
     util.cycle_scrolling(driver)
 
     # Current date
     current_date = datetime.now().strftime('%Y-%m-%d')
-
+    logger.info('masonline Start to scrap')
     try:
         # Find the main container div
         gallery_container = driver.find_element(By.CLASS_NAME, 'valtech-gdn-search-result-0-x-gallery.flex.flex-row.flex-wrap.items-stretch.bn.ph1.na4.pl9-l')
@@ -76,7 +94,8 @@ def run(keyword, page, data):
                     'market': 'masonline'
                 }
 
-                print(product_document)
+                print(f'product of masonline market = {product_document}')
+                logger.info(f'product of masonline market = {product_document}')
                 data.append(product_document)
             except Exception as e:
                 print(f"An error occurred while retrieving a product: {e}")

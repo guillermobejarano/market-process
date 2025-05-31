@@ -27,8 +27,9 @@ def run_multiple(keyword, pages, start):
      
 
 def run(keyword, page, data):
-    print("🟢 Launching browser...")
-    logger.info(f'Launching browser...')
+    print("vea Launching browser...")
+    logger.info('vea Launching browser...')
+
     # Recommended flags for headless use in Docker
     from selenium.webdriver.chrome.options import Options
 
@@ -40,11 +41,11 @@ def run(keyword, page, data):
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--dns-prefetch-disable")
-    
+    chrome_options.add_argument("--dns-prefetch-disable")    
     driver = webdriver.Chrome(options=chrome_options)
-    print("Browser launched successfully")
-    logger.info('Browser launched successfully')
+
+    print("vea Browser launched successfully")
+    logger.info('vea Browser launched successfully')
 
     driver.implicitly_wait(5)
     # Open the browser window in full screen start in 1
@@ -53,15 +54,14 @@ def run(keyword, page, data):
     # input_element = driver.find_element(By.ID , "downshift-1-input")
     # input_element.send_keys(keyword + Keys.ENTER)
     time.sleep(5)
+    logger.info('vea time.sleep(5)')
 
-    logger.info('time.sleep(5)')
     util.cycle_scrolling(driver)
 
     # Current date
     current_date = datetime.now().strftime('%Y-%m-%d')
 
-    logger.info('Start to scrap')
-
+    logger.info('vea Start to scrap')
     try:
         # Find the main container div
         gallery_container = driver.find_element(By.ID, 'gallery-layout-container')
@@ -103,11 +103,9 @@ def run(keyword, page, data):
                     'market': 'vea'
                 }
 
-                print(product_document)
+                print(f'product of vea market = {product_document}')
                 logger.info(f'product of vea market = {product_document}')
                 data.append(product_document)
-                # Insert the product document into the MongoDB collection
-                #collection.insert_one(product_document)
             except Exception as e:
                 print(f"An error occurred while retrieving a product: {e}")
 

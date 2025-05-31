@@ -5,6 +5,10 @@ import time
 import util
 from datetime import datetime
 import csv
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def run_multiple(keyword, pages, start):
     i = start
@@ -24,20 +28,27 @@ def run_multiple(keyword, pages, start):
 
 def run(keyword, page, data):
     try:
-        print("🟢 Launching browser...")
+        print("carrefour Launching browser...")
+        logger.info('carrefour Launching browser...')
+
         # Recommended flags for headless use in Docker
         from selenium.webdriver.chrome.options import Options
 
         chrome_options = Options()
+        chrome_options.add_argument("enable-automation")
         chrome_options.add_argument("--headless=new")  # newer, more reliable headless mode
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.add_argument("--disable-extensions")
-
+        chrome_options.add_argument("--dns-prefetch-disable")
+        
         driver = webdriver.Chrome(options=chrome_options)
-        print("✅ Browser launched successfully")
+
+        print("carrefour Browser launched successfully")
+        logger.info('carrefour Browser launched successfully')
+
         driver.implicitly_wait(5)
 
         # Open the browser window in full screen start in 1
@@ -47,12 +58,13 @@ def run(keyword, page, data):
         # input_element = driver.find_element(By.ID , "downshift-1-input")
         # input_element.send_keys(keyword + Keys.ENTER)
         time.sleep(5)
+        logger.info('carrefour time.sleep(5)')
 
         util.cycle_scrolling(driver)
 
         # Current date
         current_date = datetime.now().strftime('%Y-%m-%d')
-
+        logger.info('carrefour time.sleep(5)')
         try:
             # Find the main container div
             gallery_container = driver.find_element(By.CLASS_NAME, 'relative.justify-center.flex')
@@ -85,8 +97,8 @@ def run(keyword, page, data):
                         'market': 'carrefour'
                     }
 
-                    print(product_document)
-                    data.append(product_document)
+                    print(f'product of carrefour market = {product_document}')
+                    logger.info(f'product of carrefour market = {product_document}')
                 except Exception as e:
                     print(f"An error occurred while retrieving a product: {e}")
 
