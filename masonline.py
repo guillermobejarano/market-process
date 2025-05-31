@@ -5,8 +5,6 @@ import time
 import util
 from datetime import datetime
 import csv
-import json
-from bs4 import BeautifulSoup
 
 def run_multiple(keyword, pages, start):
     i = start
@@ -33,8 +31,6 @@ def run(keyword, page, data):
     # Open the browser window in full screen start in 1
 
     driver.get(f"https://www.masonline.com.ar/{keyword}?map=productclusternames&page={page}")
-    # Set up MongoDB connection
-    collection = util.get_products()
 
     # input_element = driver.find_element(By.ID , "downshift-1-input")
     # input_element.send_keys(keyword + Keys.ENTER)
@@ -46,18 +42,11 @@ def run(keyword, page, data):
     current_date = datetime.now().strftime('%Y-%m-%d')
 
     try:
-        #soup = BeautifulSoup(driver.page_source, 'html.parser')
-        #script_data = script_data = soup.select_one(".render-provider script").get_text()
-        # following abdusco answer
-        #cleaned_data = script_data.replace('\n', ' ')
-        #json_data = json.loads(cleaned_data)
-
-
         # Find the main container div
-        gallery_container = driver.find_element(By.CLASS_NAME, 'valtech-gdn-search-result-0-x-gallery')
+        gallery_container = driver.find_element(By.CLASS_NAME, 'valtech-gdn-search-result-0-x-gallery.flex.flex-row.flex-wrap.items-stretch.bn.ph1.na4.pl9-l')
         
         # Find all product divs inside the gallery container
-        product_divs = gallery_container.find_elements(By.CLASS_NAME, 'valtech-gdn-search-result-0-x-galleryItem.valtech-gdn-search-result-0-x-galleryItem--normal.pa4')
+        product_divs = gallery_container.find_elements(By.CLASS_NAME, 'vtex-product-summary-2-x-clearLink.h-100.flex.flex-column')
         
         for product_div in product_divs:
             try:
@@ -89,8 +78,6 @@ def run(keyword, page, data):
 
                 print(product_document)
                 data.append(product_document)
-                # Insert the product document into the MongoDB collection
-                #collection.insert_one(product_document)
             except Exception as e:
                 print(f"An error occurred while retrieving a product: {e}")
 
