@@ -59,6 +59,8 @@ def run(keyword, page, data):
     # Current date
     current_date = datetime.now().strftime('%Y-%m-%d')
 
+    logger.info(f'Start to scrap')
+
     try:
         # Find the main container div
         gallery_container = driver.find_element(By.ID, 'gallery-layout-container')
@@ -101,6 +103,7 @@ def run(keyword, page, data):
                 }
 
                 print(product_document)
+                logger.info(f'product of vea market = {product_document}')
                 data.append(product_document)
                 # Insert the product document into the MongoDB collection
                 #collection.insert_one(product_document)
@@ -109,5 +112,6 @@ def run(keyword, page, data):
 
     except Exception as e:
         print(f"An error occurred while finding the gallery container or product divs: {e}")
+        logger.error(f"An error occurred while finding the gallery container or product divs: {e}")
 
     driver.quit()
