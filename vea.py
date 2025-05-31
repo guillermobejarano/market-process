@@ -67,7 +67,7 @@ def run(keyword, page, data):
         gallery_container = driver.find_element(By.ID, 'gallery-layout-container')
         
         # Find all product divs inside the gallery container
-        product_divs = gallery_container.find_elements(By.CLASS_NAME, 'vtex-search-result-3-x-galleryItem.vtex-search-result-3-x-galleryItem--normal.vtex-search-result-3-x-galleryItem--grid.pa4')
+        product_divs = gallery_container.find_elements(By.CLASS_NAME, 'vtex-product-summary-2-x-clearLink.h-100.flex.flex-column')
         
         for product_div in product_divs:
             try:
