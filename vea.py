@@ -5,6 +5,10 @@ import time
 import util
 from datetime import datetime
 import csv
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def run_multiple(keyword, pages, start):
     i = start
@@ -24,6 +28,7 @@ def run_multiple(keyword, pages, start):
 
 def run(keyword, page, data):
     print("🟢 Launching browser...")
+    logger.info(f'Launching browser...')
     # Recommended flags for headless use in Docker
     from selenium.webdriver.chrome.options import Options
 
@@ -37,11 +42,10 @@ def run(keyword, page, data):
 
     driver = webdriver.Chrome(options=chrome_options)
     print("✅ Browser launched successfully")
+    logger.info(f'Browser launched successfully')
 
     driver.implicitly_wait(5)
     # Open the browser window in full screen start in 1
-    #https://www.vea.com.ar/quesos-y-fiambres/quesos?page=1
-    #sdriver.get(f"https://www.vea.com.ar/{keyword}-y-fiambres/{keyword}?page={page}")
     driver.get(f"https://www.vea.com.ar/{keyword}?page={page}")
     # Set up MongoDB connection
     #collection = util.get_products()
