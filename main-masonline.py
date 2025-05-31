@@ -9,8 +9,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
-def run_masonline_tasks():
+def main():
     # Get current time in UTC
     utc_now = datetime.now(pytz.UTC)
     logger.info(f'Running masonline tasks at UTC: {utc_now}')
@@ -36,14 +35,14 @@ def run_masonline_tasks():
 
 if __name__ == "__main__":
     # Schedule the job to run at midnight UTC
-    schedule.every().day.at("06:36").do(run_masonline_tasks)
+    schedule.every().day.at("13:23").do(main)
     
     print("masonline Scheduler started. Waiting for midnight UTC to run tasks...")
     logger.info("masonline Scheduler started. Waiting for midnight UTC to run tasks...")
     print(f"masonline Current UTC time: {datetime.now(pytz.UTC)}")
     logger.info(f"masonline Current UTC time: {datetime.now(pytz.UTC)}")
     # Run the job immediately on startup
-    #run_masonline_tasks()
+    main()
     
     # Keep the script running
     while True:

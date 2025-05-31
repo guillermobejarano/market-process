@@ -9,7 +9,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def run_vea_tasks():
+def main():
     # Get current time in UTC
     utc_now = datetime.now(pytz.UTC)
     logger.info(f'Running carrefour tasks at UTC: {utc_now}')
@@ -36,14 +36,14 @@ def run_vea_tasks():
 
 if __name__ == "__main__":
     # Schedule the job to run at midnight UTC
-    schedule.every().day.at("06:36").do(run_carrefour_tasks)
+    schedule.every().day.at("13:20").do(main)
     
     print("carrefour Scheduler started. Waiting for midnight UTC to run tasks...")
     logger.info("carrefour Scheduler started. Waiting for midnight UTC to run tasks...")
     print(f"carrefour Current UTC time: {datetime.now(pytz.UTC)}")
     logger.info(f"carrefour Current UTC time: {datetime.now(pytz.UTC)}")
     # Run the job immediately on startup
-    #run_carrefour_tasks()
+    main()
     
     # Keep the script running
     while True:

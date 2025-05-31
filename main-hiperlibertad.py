@@ -9,8 +9,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
-def run_hiperlibertad_tasks():
+def main():
     # Get current time in UTC
     utc_now = datetime.now(pytz.UTC)
     logger.info(f'Running hiperlibertad tasks at UTC: {utc_now}')
@@ -45,14 +44,14 @@ def run_hiperlibertad_tasks():
 
 if __name__ == "__main__":
     # Schedule the job to run at midnight UTC
-    schedule.every().day.at("06:36").do(run_hiperlibertad_tasks)
+    schedule.every().day.at("13:21").do(main)
     
     print("hiperlibertad Scheduler started. Waiting for midnight UTC to run tasks...")
     logger.info("hiperlibertad Scheduler started. Waiting for midnight UTC to run tasks...")
     print(f"hiperlibertad Current UTC time: {datetime.now(pytz.UTC)}")
     logger.info(f"hiperlibertad Current UTC time: {datetime.now(pytz.UTC)}")
     # Run the job immediately on startup
-    #run_hiperlibertad_tasks()
+    main()
     
     # Keep the script running
     while True:
