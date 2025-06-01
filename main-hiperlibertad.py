@@ -35,8 +35,8 @@ def main():
 
     # Function wrapper
     def run_task(args):
-        category, pages, delay = args
-        hiperlibertad.run_multiple(category, pages, delay)
+        category, pages, delay, start = args
+        hiperlibertad.run_multiple(category, pages, delay, start)
 
     # Run all tasks in parallel threads
     with ThreadPoolExecutor(max_workers=len(tasks)) as executor:
@@ -44,7 +44,7 @@ def main():
 
 if __name__ == "__main__":
     # Schedule the job to run at midnight UTC
-    schedule.every().day.at("13:21").do(main)
+    #schedule.every().day.at("13:21").do(main)
     
     print("hiperlibertad Scheduler started. Waiting for midnight UTC to run tasks...")
     logger.info("hiperlibertad Scheduler started. Waiting for midnight UTC to run tasks...")
@@ -56,4 +56,4 @@ if __name__ == "__main__":
     # Keep the script running
     while True:
         schedule.run_pending()
-        time.sleep(1)  # Check every minute
+        time.sleep(60)  # Check every minute
