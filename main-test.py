@@ -1,7 +1,4 @@
-# main.py
-import threading
-import asyncio
-import importlib  
+# main-test.py  
 import vea
 
  # List of tasks to run in parallel
@@ -13,4 +10,10 @@ tasks = [
      ("lacteos", 15, 1),
      ("bebidas", 30, 1),
  ]
-vea.run_multiple(tasks[0][0], tasks[0][1], tasks[0][2])
+
+vea.run_multiple("almacen", 50, 1)
+vea.run_multiple("congelados", 6, 1)
+vea.run_multiple("quesos-y-fiambres", 13, 1)
+vea.run_multiple("limpieza", 24, 1)
+vea.run_multiple("lacteos", 15, 1)
+vea.run_multiple("bebidas", 30, 1)
